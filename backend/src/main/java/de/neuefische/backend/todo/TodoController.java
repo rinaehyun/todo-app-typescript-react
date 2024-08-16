@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/todo")
+@RequestMapping("/api")
 class TodoController {
 
     private final TodoService todoService;
@@ -17,22 +17,22 @@ class TodoController {
         this.todoService = todoService;
     }
 
-    @GetMapping
+    @GetMapping("/todo")
     List<Todo> getAll() {
         return todoService.getAll();
     }
 
-    @PostMapping
+    @PostMapping("/todo")
     Todo postTodo(@RequestBody Todo todo) {
         return todoService.save(todo);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/todo/{id}")
     Todo getTodoById(@PathVariable String id) {
         return todoService.getById(id);
     }
 
-    @PutMapping(path = {"{id}/update", "{id}"})
+    @PutMapping(path = {"/todo/{id}/update", "/{id}"})
     Todo update(@PathVariable String id, @RequestBody Todo todo) {
         if (!todo.id().equals(id)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The id in the url does not match the request body's id");
@@ -40,7 +40,7 @@ class TodoController {
         return todoService.update(todo);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/todo/{id}")
     void delete(@PathVariable String id) {
         todoService.delete(id);
     }
