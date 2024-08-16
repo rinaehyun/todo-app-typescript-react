@@ -1,20 +1,29 @@
 package de.neuefische.backend.todo;
 
-public record Todo(
-        String id,
-        String description,
-        TodoStatus status
-) {
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
-    Todo(
-            String description,
-            TodoStatus status
-    ) {
-        this(null, description, status);
-    }
+@Entity
+@Builder
+@Table(name = "todo")
+@AllArgsConstructor
+@Data
+public class Todo {
+        @Id
+        @Column(name = "id", nullable = false)
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        private Integer id;
 
+        @Column(name = "todo", nullable = false)
+        private String description;
 
-    public Todo withId(String id) {
-        return new Todo(id, description, status);
-    }
+        @Column(name = "status", nullable = false)
+        @Enumerated(EnumType.STRING)
+        private TodoStatus status;
+
+        public Todo() {
+                // Constructor without args
+        }
 }
