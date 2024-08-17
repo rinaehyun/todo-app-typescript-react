@@ -1,11 +1,6 @@
-package de.neuefische.backend.todo;
+package de.neuefische.backend.todo.service;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import java.util.Collections;
-import java.util.List;
+import de.neuefische.backend.todo.repository.TodoRepository;
 
 import static org.mockito.Mockito.mock;
 

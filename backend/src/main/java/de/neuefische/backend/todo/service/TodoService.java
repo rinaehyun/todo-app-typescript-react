@@ -1,13 +1,14 @@
-package de.neuefische.backend.todo;
+package de.neuefische.backend.todo.service;
 
 import de.neuefische.backend.todo.dto.NewTodoDto;
+import de.neuefische.backend.todo.model.Todo;
 import de.neuefische.backend.todo.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-class TodoService {
+public class TodoService {
 
     private final TodoRepository todoRepository;
 

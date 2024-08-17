@@ -1,10 +1,11 @@
-package de.neuefische.backend.todo;
+package de.neuefische.backend.todo.repository;
 
+import de.neuefische.backend.todo.model.Todo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-interface TodoRepository extends JpaRepository<Todo, Integer> {
+public interface TodoRepository extends JpaRepository<Todo, Integer> {
 
     /*
     private final Map<String, Todo> todos = new HashMap<>(Map.of("1", new Todo("1", "Test", TodoStatus.OPEN)));

@@ -1,5 +1,7 @@
-package de.neuefische.backend.todo;
+package de.neuefische.backend.todo.controller;
 
+import de.neuefische.backend.todo.model.Todo;
+import de.neuefische.backend.todo.service.TodoService;
 import de.neuefische.backend.todo.dto.NewTodoDto;
 import org.springframework.web.bind.annotation.*;
 

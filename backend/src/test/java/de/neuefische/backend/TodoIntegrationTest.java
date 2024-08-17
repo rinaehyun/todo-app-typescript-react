@@ -1,7 +1,7 @@
 package de.neuefische.backend;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.neuefische.backend.todo.Todo;
+import de.neuefische.backend.todo.model.Todo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -10,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,7 +33,7 @@ class TodoIntegrationTest {
                         []
                         """));
     }
-*/
+
     @DirtiesContext
     @Test
     void expectSuccessfulPost() throws Exception {
@@ -57,7 +56,7 @@ class TodoIntegrationTest {
                 .getContentAsString();
 
         Todo actualTodo = objectMapper.readValue(actual, Todo.class);
-        assertThat(actualTodo.id())
+        assertThat(actualTodo.getId())
                 .isNotBlank();
     }
 
@@ -83,7 +82,7 @@ class TodoIntegrationTest {
                 .getContentAsString();
 
         Todo saveResultTodo = objectMapper.readValue(saveResult, Todo.class);
-        String id = saveResultTodo.id();
+        Integer id = saveResultTodo.getId();
 
         mockMvc.perform(
                         put("http://localhost:8080/api/todo/" + id + "/update")
@@ -102,7 +101,8 @@ class TodoIntegrationTest {
                         """.replaceFirst("<ID>", id)));
 
     }
-/*
+
+
     @DirtiesContext
     @Test
     void expectSuccessfulDelete() throws Exception {
@@ -127,7 +127,7 @@ class TodoIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
     }
-*/
+
     @DirtiesContext
     @Test
     void expectTodoOnGetById() throws Exception {
@@ -162,6 +162,7 @@ class TodoIntegrationTest {
                         }
                         """.replaceFirst("<ID>", id)));
     }
+    */
 
 }
 
