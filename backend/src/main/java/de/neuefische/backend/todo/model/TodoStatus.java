@@ -1,4 +1,4 @@
-package de.neuefische.backend.todo;
+package de.neuefische.backend.todo.model;
 
 public enum TodoStatus {
     OPEN,

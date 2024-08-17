@@ -1,14 +1,14 @@
-package de.neuefische.backend.todo;
+package de.neuefische.backend.todo.controller;
 
-import org.springframework.http.HttpStatus;
+import de.neuefische.backend.todo.model.Todo;
+import de.neuefische.backend.todo.service.TodoService;
+import de.neuefische.backend.todo.dto.NewTodoDto;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/todo")
+@RequestMapping("/api")
 class TodoController {
 
     private final TodoService todoService;
@@ -17,22 +17,23 @@ class TodoController {
         this.todoService = todoService;
     }
 
-    @GetMapping
-    List<Todo> getAll() {
-        return todoService.getAll();
+    @GetMapping("/todo")
+    public List<Todo> getAllTodos() {
+        return todoService.retrieveAllTodos();
     }
 
-    @PostMapping
-    Todo postTodo(@RequestBody Todo todo) {
-        return todoService.save(todo);
+    @PostMapping("/todo")
+    public Todo createATodo(@RequestBody NewTodoDto newTodo) {
+        return todoService.saveNewTodo(newTodo);
     }
 
-    @GetMapping("{id}")
+    /*
+    @GetMapping("/todo/{id}")
     Todo getTodoById(@PathVariable String id) {
         return todoService.getById(id);
     }
 
-    @PutMapping(path = {"{id}/update", "{id}"})
+    @PutMapping(path = {"/todo/{id}/update", "/{id}"})
     Todo update(@PathVariable String id, @RequestBody Todo todo) {
         if (!todo.id().equals(id)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The id in the url does not match the request body's id");
@@ -40,10 +41,11 @@ class TodoController {
         return todoService.update(todo);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/todo/{id}")
     void delete(@PathVariable String id) {
         todoService.delete(id);
     }
+    */
  }
 
 
