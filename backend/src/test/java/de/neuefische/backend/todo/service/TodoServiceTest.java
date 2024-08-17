@@ -1,5 +1,6 @@
 package de.neuefische.backend.todo.service;
 
+import de.neuefische.backend.todo.dto.NewTodoDto;
 import de.neuefische.backend.todo.model.Todo;
 import de.neuefische.backend.todo.model.TodoStatus;
 import de.neuefische.backend.todo.repository.TodoRepository;
@@ -10,8 +11,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class TodoServiceTest {
 
@@ -34,6 +34,7 @@ class TodoServiceTest {
 
         // THEN
         List<Todo> expected = todos;
+        verify(todoRepository, times(1)).findAll();
 
         assertEquals(expected, actual);
         assertThat(actual).isEqualTo(expected)
@@ -51,9 +52,25 @@ class TodoServiceTest {
         List<Todo> actual = todoRepository.findAll();
 
         // THEN
+        verify(todoRepository, times(1)).findAll();
         assertThat(actual).isEmpty();
     }
 
+    @Test
+    void createATodoTest_whenPayloadIsRight_thenSaveATodo() {
+        // GIVEN
+        NewTodoDto newTodoDto = new NewTodoDto("Jogging", TodoStatus.IN_PROGRESS);
+        Todo todoToSave = new Todo(null, newTodoDto.description(), newTodoDto.status());
+        when(todoRepository.save(todoToSave)).thenReturn(todoToSave);
+
+        // WHEN
+        Todo actual = todoService.saveNewTodo(newTodoDto);
+
+        // THEN
+        Todo expected = new Todo(null, newTodoDto.description(), newTodoDto.status());
+        verify(todoRepository, times(1)).save(todoToSave);
+        assertEquals(expected, actual);
+    }
 }
 
 
