@@ -1,12 +1,14 @@
-package de.neuefische.backend.todo;
+package de.neuefische.backend.todo.service;
 
+import de.neuefische.backend.todo.dto.NewTodoDto;
+import de.neuefische.backend.todo.model.Todo;
+import de.neuefische.backend.todo.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
-class TodoService {
+public class TodoService {
 
     private final TodoRepository todoRepository;
 
@@ -14,18 +16,19 @@ class TodoService {
         this.todoRepository = todoRepository;
     }
 
-    List<Todo> getAll() {
-        return todoRepository.getAll();
+    public List<Todo> retrieveAllTodos() {
+        return todoRepository.findAll();
     }
 
-    public Todo save(Todo todo) {
-        String id = UUID.randomUUID().toString();
-
-        Todo todoToSave = todo.withId(id);
+    public Todo saveNewTodo(NewTodoDto newTodo) {
+        Todo todoToSave = Todo.builder()
+                .description(newTodo.description())
+                .status(newTodo.status())
+                .build();
 
         return todoRepository.save(todoToSave);
     }
-
+/*
     public Todo getById(String id) {
         return todoRepository.getById(id);
     }
@@ -37,6 +40,8 @@ class TodoService {
     public void delete(String id) {
         todoRepository.delete(id);
     }
+
+     */
 }
 
 

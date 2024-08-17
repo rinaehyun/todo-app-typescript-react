@@ -1,10 +1,10 @@
-package de.neuefische.backend.todo;
+package de.neuefische.backend.todo.controller;
 
-import org.springframework.http.HttpStatus;
+import de.neuefische.backend.todo.model.Todo;
+import de.neuefische.backend.todo.service.TodoService;
+import de.neuefische.backend.todo.dto.NewTodoDto;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -18,15 +18,16 @@ class TodoController {
     }
 
     @GetMapping("/todo")
-    List<Todo> getAll() {
-        return todoService.getAll();
+    public List<Todo> getAllTodos() {
+        return todoService.retrieveAllTodos();
     }
 
     @PostMapping("/todo")
-    Todo postTodo(@RequestBody Todo todo) {
-        return todoService.save(todo);
+    public Todo createATodo(@RequestBody NewTodoDto newTodo) {
+        return todoService.saveNewTodo(newTodo);
     }
 
+    /*
     @GetMapping("/todo/{id}")
     Todo getTodoById(@PathVariable String id) {
         return todoService.getById(id);
@@ -44,6 +45,7 @@ class TodoController {
     void delete(@PathVariable String id) {
         todoService.delete(id);
     }
+    */
  }
 
 

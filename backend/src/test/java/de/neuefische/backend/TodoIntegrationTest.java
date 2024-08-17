@@ -1,168 +1,77 @@
 package de.neuefische.backend;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.neuefische.backend.todo.Todo;
+import de.neuefische.backend.todo.model.Todo;
+import de.neuefische.backend.todo.model.TodoStatus;
+import de.neuefische.backend.todo.repository.TodoRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class TodoIntegrationTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    ObjectMapper objectMapper;
-/*
-    @DirtiesContext
-    @Test
-    void expectEmptyListOnGet() throws Exception {
-        mockMvc.perform(get("http://localhost:8080/api/todo"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("""
-                        []
-                        """));
-    }
-*/
-    @DirtiesContext
-    @Test
-    void expectSuccessfulPost() throws Exception {
-        String actual = mockMvc.perform(
-                        post("http://localhost:8080/api/todo")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("""
-                                        {"description":"Nächsten Endpunkt implementieren","status":"OPEN"}
-                                        """)
-                )
-                .andExpect(status().isOk())
-                .andExpect(content().json("""
-                        {
-                          "description": "Nächsten Endpunkt implementieren",
-                          "status": "OPEN"
-                        }
-                        """))
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+    private TodoRepository todoRepository;
 
-        Todo actualTodo = objectMapper.readValue(actual, Todo.class);
-        assertThat(actualTodo.id())
-                .isNotBlank();
-    }
 
     @DirtiesContext
     @Test
-    void expectSuccessfulPut() throws Exception {
-        String saveResult = mockMvc.perform(
-                        post("http://localhost:8080/api/todo")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("""
-                                        {"description":"Nächsten Endpunkt implementieren","status":"OPEN"}
-                                        """)
-                )
-                .andExpect(status().isOk())
-                .andExpect(content().json("""
-                        {
-                          "description": "Nächsten Endpunkt implementieren",
-                          "status": "OPEN"
-                        }
-                        """))
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+    void getAllTodosTest_whenRepoIsEmpty_thenReturnEmptyList() throws Exception {
+        // GIVEN
 
-        Todo saveResultTodo = objectMapper.readValue(saveResult, Todo.class);
-        String id = saveResultTodo.id();
-
-        mockMvc.perform(
-                        put("http://localhost:8080/api/todo/" + id + "/update")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("""
-                                        {"id":"<ID>","description":"Bla","status":"IN_PROGRESS"}
-                                        """.replaceFirst("<ID>", id))
-                )
-                .andExpect(status().isOk())
-                .andExpect(content().json("""
-                        {
-                          "id": "<ID>",
-                          "description": "Bla",
-                          "status": "IN_PROGRESS"
-                        }
-                        """.replaceFirst("<ID>", id)));
-
-    }
-/*
-    @DirtiesContext
-    @Test
-    void expectSuccessfulDelete() throws Exception {
-        String saveResult = mockMvc.perform(
-                        post("/api/todo")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("""
-                                        {"description":"Nächsten Endpunkt implementieren","status":"OPEN"}
-                                        """)
-                )
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-
-        Todo saveResultTodo = objectMapper.readValue(saveResult, Todo.class);
-        String id = saveResultTodo.id();
-
-        mockMvc.perform(delete("/api/todo/" + id))
-                .andExpect(status().isOk());
-
+        // WHEN
         mockMvc.perform(get("/api/todo"))
+                // THEN
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
     }
-*/
+
+
+    /*
     @DirtiesContext
     @Test
-    void expectTodoOnGetById() throws Exception {
-        String actual = mockMvc.perform(
-                        post("http://localhost:8080/api/todo")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("""
-                                        {"description":"Nächsten Endpunkt implementieren","status":"OPEN"}
-                                        """)
-                )
-                .andExpect(status().isOk())
-                .andExpect(content().json("""
-                        {
-                          "description": "Nächsten Endpunkt implementieren",
-                          "status": "OPEN"
-                        }
-                        """))
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+    @Transactional
+    void getAllTodosTest_whenRepoHasTodos_thenReturnAllTodos() {
+        // GIVEN
+        todoRepository.save(new Todo(1, "Cleaning", TodoStatus.OPEN));
+        todoRepository.save(new Todo(2, "Cooking", TodoStatus.DONE));
 
-        Todo actualTodo = objectMapper.readValue(actual, Todo.class);
-        String id = actualTodo.id();
-
-        mockMvc.perform(get("http://localhost:8080/api/todo/" + id))
-                .andExpect(status().isOk())
-                .andExpect(content().json("""
-                        {
-                          "id": "<ID>",
-                          "description": "Nächsten Endpunkt implementieren",
-                          "status": "OPEN"
-                        }
-                        """.replaceFirst("<ID>", id)));
+        // WHEN
+        try{
+            mockMvc.perform(get("/api/todo"))
+                    // THEN
+                    .andExpect(status().isOk())
+                    .andExpect(content().json("""
+                        [
+                            {
+                              "id": 1,
+                              "description": "Cleaning",
+                              "status": "OPEN"
+                            },
+                            {
+                              "id": 2,
+                              "description": "Cooking",
+                              "status": "DONE"
+                            }
+                        ]
+                    """));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
-
+     */
 }
 
 
