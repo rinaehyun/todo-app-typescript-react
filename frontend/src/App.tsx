@@ -1,11 +1,16 @@
 import './App.css'
-import TodoPage from "./pages/TodoPage.tsx";
+import LoginPage from "./pages/loginpage/LoginPage.tsx";
+import TodoPage from "./pages/todopage/TodoPage.tsx";
+import {Route, Routes} from "react-router-dom";
 
 function App() {
 
   return (
     <>
-      <TodoPage />
+        <Routes>
+            <Route path={"/"} element={<LoginPage />}></Route>
+            <Route path={"/todo"} element={<TodoPage />}></Route>
+        </Routes>
     </>
   )
 }
