@@ -6,6 +6,7 @@ import de.neuefische.backend.todo.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TodoService {
@@ -28,6 +29,17 @@ public class TodoService {
 
         return todoRepository.save(todoToSave);
     }
+
+    public String deleteTodoById(Integer id) {
+        Optional<Todo> todoToDelete = todoRepository.findById(id);
+        if (todoToDelete.isPresent()) {
+            todoRepository.deleteById(id);
+            return "The item #" + id + " has been deleted successfully.";
+        } else {
+            return "The item #" + id + " did not exist in DB.";
+        }
+    }
+
 /*
     public Todo getById(String id) {
         return todoRepository.getById(id);
@@ -36,11 +48,6 @@ public class TodoService {
     public Todo update(Todo todo) {
         return todoRepository.update(todo);
     }
-
-    public void delete(String id) {
-        todoRepository.delete(id);
-    }
-
      */
 }
 

@@ -27,6 +27,11 @@ class TodoController {
         return todoService.saveNewTodo(newTodo);
     }
 
+    @DeleteMapping("/todo/{id}")
+    public String deleteATodo(@PathVariable Integer id) {
+        return todoService.deleteTodoById(id);
+    }
+
     /*
     @GetMapping("/todo/{id}")
     Todo getTodoById(@PathVariable String id) {
@@ -39,11 +44,6 @@ class TodoController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The id in the url does not match the request body's id");
         }
         return todoService.update(todo);
-    }
-
-    @DeleteMapping("/todo/{id}")
-    void delete(@PathVariable String id) {
-        todoService.delete(id);
     }
     */
  }
