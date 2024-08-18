@@ -49,7 +49,7 @@ class TodoServiceTest {
         when(todoRepository.findAll()).thenReturn(todos);
 
         // WHEN
-        List<Todo> actual = todoRepository.findAll();
+        List<Todo> actual = todoService.retrieveAllTodos();
 
         // THEN
         verify(todoRepository, times(1)).findAll();
@@ -57,7 +57,7 @@ class TodoServiceTest {
     }
 
     @Test
-    void createATodoTest_whenPayloadIsRight_thenSaveATodo() {
+    void saveNewTodoTest_whenPayloadIsRight_thenSaveATodo() {
         // GIVEN
         NewTodoDto newTodoDto = new NewTodoDto("Jogging", TodoStatus.IN_PROGRESS);
         Todo todoToSave = new Todo(null, newTodoDto.description(), newTodoDto.status());
