@@ -22,14 +22,22 @@ export default function AddTodo({ fetchTodos }: FetchProps) {
             description: todo.description,
             status: "OPEN"
         })
-            .then(() => fetchTodos())
+            .then((): void => {
+                fetchTodos()
+                setTodo({ description: ''})
+            })
             .catch(error => alert(error))
 
     }
 
     return (
         <form>
-            <input placeholder={"Write a new task here"} onChange={handleChange}/>
+            <input
+                value={todo.description}
+                type={"text"}
+                placeholder={"Write a new task here"}
+                onChange={handleChange}
+            />
             <button onClick={handleSubmit}>+</button>
         </form>
     );
