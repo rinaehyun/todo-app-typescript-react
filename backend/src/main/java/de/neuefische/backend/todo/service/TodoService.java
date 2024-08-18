@@ -6,6 +6,7 @@ import de.neuefische.backend.todo.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TodoService {
@@ -28,6 +29,11 @@ public class TodoService {
 
         return todoRepository.save(todoToSave);
     }
+
+    public void deleteTodoById(Integer id) {
+        todoRepository.deleteById(id);
+    }
+
 /*
     public Todo getById(String id) {
         return todoRepository.getById(id);
@@ -36,11 +42,6 @@ public class TodoService {
     public Todo update(Todo todo) {
         return todoRepository.update(todo);
     }
-
-    public void delete(String id) {
-        todoRepository.delete(id);
-    }
-
      */
 }
 

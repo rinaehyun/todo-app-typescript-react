@@ -11,6 +11,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 class TodoServiceTest {
@@ -49,7 +50,7 @@ class TodoServiceTest {
         when(todoRepository.findAll()).thenReturn(todos);
 
         // WHEN
-        List<Todo> actual = todoRepository.findAll();
+        List<Todo> actual = todoService.retrieveAllTodos();
 
         // THEN
         verify(todoRepository, times(1)).findAll();
@@ -57,7 +58,7 @@ class TodoServiceTest {
     }
 
     @Test
-    void createATodoTest_whenPayloadIsRight_thenSaveATodo() {
+    void saveNewTodoTest_whenPayloadIsRight_thenSaveATodo() {
         // GIVEN
         NewTodoDto newTodoDto = new NewTodoDto("Jogging", TodoStatus.IN_PROGRESS);
         Todo todoToSave = new Todo(null, newTodoDto.description(), newTodoDto.status());
@@ -71,7 +72,20 @@ class TodoServiceTest {
         verify(todoRepository, times(1)).save(todoToSave);
         assertEquals(expected, actual);
     }
-}
+
+    @Test
+    void deleteTodoById_whenIdExists_thenDeleteTodo() {
+        // GIVEN
+        Integer id = 2;
+
+        // WHEN
+        doNothing().when(todoRepository).deleteById(id);
+        todoService.deleteTodoById(id);
+
+        // THEN
+        verify(todoRepository, times(1)).deleteById(id);
+    }
+ }
 
 
 
