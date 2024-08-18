@@ -11,6 +11,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 class TodoServiceTest {
@@ -71,7 +72,20 @@ class TodoServiceTest {
         verify(todoRepository, times(1)).save(todoToSave);
         assertEquals(expected, actual);
     }
-}
+
+    @Test
+    void deleteTodoById_whenIdExists_thenDeleteTodo() {
+        // GIVEN
+        Integer id = 2;
+
+        // WHEN
+        doNothing().when(todoRepository).deleteById(id);
+        todoService.deleteTodoById(id);
+
+        // THEN
+        verify(todoRepository, times(1)).deleteById(id);
+    }
+ }
 
 
 

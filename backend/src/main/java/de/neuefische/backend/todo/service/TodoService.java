@@ -30,14 +30,8 @@ public class TodoService {
         return todoRepository.save(todoToSave);
     }
 
-    public String deleteTodoById(Integer id) {
-        Optional<Todo> todoToDelete = todoRepository.findById(id);
-        if (todoToDelete.isPresent()) {
-            todoRepository.deleteById(id);
-            return "The item #" + id + " has been deleted successfully.";
-        } else {
-            return "The item #" + id + " did not exist in DB.";
-        }
+    public void deleteTodoById(Integer id) {
+        todoRepository.deleteById(id);
     }
 
 /*
