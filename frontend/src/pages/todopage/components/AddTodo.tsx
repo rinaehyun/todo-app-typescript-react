@@ -1,3 +1,4 @@
+import './AddTodo.css'
 import {ChangeEvent, FormEvent, useState} from "react";
 import {NewTodo} from "../../../types/Todo.ts";
 import axios from "axios";
@@ -31,14 +32,15 @@ export default function AddTodo({ fetchTodos }: FetchProps) {
     }
 
     return (
-        <form>
+        <form className={"add-todo-form"}>
             <input
                 value={todo.description}
                 type={"text"}
                 placeholder={"Write a new task here"}
                 onChange={handleChange}
+                className={"add-todo-input"}
             />
-            <button onClick={handleSubmit}>+</button>
+            <button onClick={handleSubmit}>Add todo</button>
         </form>
     );
 }
