@@ -25,7 +25,7 @@ export default function TodoPage() {
         <>
             <h2>This is TodoApp main page.</h2>
             <TodoGallery data={todos}/>
-            <AddTodo />
+            <AddTodo fetchTodos={fetchAllTodos} />
         </>
     )
 }

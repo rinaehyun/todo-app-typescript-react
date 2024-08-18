@@ -1,3 +1,36 @@
-export default function AddTodo() {
-    return "This is AddTodo";
+import {ChangeEvent, FormEvent, useState} from "react";
+import {NewTodo} from "../../../types/Todo.ts";
+import axios from "axios";
+
+export type FetchProps = {
+    fetchTodos: () => void
+}
+
+export default function AddTodo({ fetchTodos }: FetchProps) {
+    const [todo, setTodo] = useState<NewTodo>({
+        description: ''
+    });
+
+    const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+        setTodo({ description: event.target.value });
+    }
+
+    const handleSubmit = (event: FormEvent<HTMLButtonElement>): void => {
+        event.preventDefault();
+
+        axios.post("/api/todo", {
+            description: todo.description,
+            status: "OPEN"
+        })
+            .then(() => fetchTodos())
+            .catch(error => alert(error))
+
+    }
+
+    return (
+        <form>
+            <input placeholder={"Write a new task here"} onChange={handleChange}/>
+            <button onClick={handleSubmit}>+</button>
+        </form>
+    );
 }
