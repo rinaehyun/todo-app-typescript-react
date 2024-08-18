@@ -1,4 +1,5 @@
 .todo-card {
+    transition: box-shadow .5s;
     display: flex;
     flex-direction: row;
     background-color: #1a1a1a;
@@ -8,6 +9,10 @@
     margin: 10px;
     gap: 10px;
     min-width: 500px;
+}
+
+.todo-card:hover {
+    box-shadow: 0 0 5px white;
 }
 
 input[type=checkbox]
