@@ -18,9 +18,5 @@ public interface TodoRepository extends JpaRepository<Todo, Integer> {
         todos.put(todo.id(), todo);
         return todo;
     }
-
-    public void delete(String id) {
-        todos.remove(id);
-    }
     */
 }
